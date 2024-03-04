@@ -56,12 +56,15 @@ body {font-family: "Lato", sans-serif}
                 <h2>{{ user.username }}'s Profile</h2>
                 <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Student</p>
                 <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Austin, Tx</p>
-                <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>{{ user.username }}</p>
-                <a href="{% url 'edit_profile' %}" class="btn btn-secondary" role="button">Edit Profile</a>
+                {% if quiz %}
+                <p><i class="quiz-title">Quiz Title: </i>{{ quiz_id }}</p>
+                {% else %}
+                <p><i class="quiz-title">No quiz title created yet</i></p>
+                {% endif %}
+                <a href="{% url 'create_title' %}" class="btn btn-secondary" role="button">Create Quiz Title</a>
+                
                 <hr>
             </div>  
         </div>
     </div>
 </div>
-</body>
-</html>

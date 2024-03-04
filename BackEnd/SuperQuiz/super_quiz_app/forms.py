@@ -1,12 +1,10 @@
 # forms.py
 from django import forms
-from django.contrib.auth.forms import UserChangeForm
-from django.contrib.auth.models import User
+from .models import Quiz
 
-class EditProfileForm(UserChangeForm):
-    
+
+class QuizForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = (
-            'username',
-        )
+        model = Quiz
+        fields = ('title',) 
+        exclude = ['pub_date']
