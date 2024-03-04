@@ -133,7 +133,7 @@ def create_title(request):
             quiz.user = request.user
             quiz.pub_date = timezone.now()
             quiz.save()
-            return redirect('/users/<username>')  # Redirect to the profile page after creating the quiz
+            return redirect('profile', username=request.user.username)  # Redirect to the profile page after creating the quiz
     else:
         form = QuizForm()
     return render(request, 'edit_title.html', {'form': form})

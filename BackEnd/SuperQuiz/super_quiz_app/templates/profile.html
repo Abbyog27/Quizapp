@@ -57,7 +57,9 @@ body {font-family: "Lato", sans-serif}
                 <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Student</p>
                 <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Austin, Tx</p>
                 {% if quiz %}
-                <p><i class="quiz-title">Quiz Title: </i>{{ quiz_id }}</p>
+                
+                <p><i class="quiz-title">Quiz Title: </i>{{ quiz.title }}</p>
+                    
                 {% else %}
                 <p><i class="quiz-title">No quiz title created yet</i></p>
                 {% endif %}
