@@ -62,7 +62,11 @@ def signup(request):
 @login_required
 def profile(request, username):
     user = User.objects.get(username=username)
-    quiz = Quiz.objects.get(user_id=user.id);
+    quiz = None
+    try:
+        quiz = Quiz.objects.get(user_id=user.id);
+    except Exception as e:
+        print('No quiz to display!')   
     return render(request, 'profile.html', {'user': user, 'quiz_title': quiz})
 
 def home(request):
@@ -90,24 +94,15 @@ def update_title(request, username):
         user = User.objects.get(username=username)
     return render(request, 'quiz/edit_title.html', {'form': form, 'user': user})
 
-# def edit_title(request, quiz_id):
-#     # Retrieve the quiz object from the database
-#     quiz = get_object_or_404(Quiz, id=quiz_id, user=request.user)
-
-#     if request.method == 'POST':
-#         # Create a form instance and populate it with data from the request
-#         form = EditQuizForm(request.POST, instance=quiz)
-#         if form.is_valid():
-#             # Save the form with the updated quiz title
-#             form.save()
-#             # Redirect to the updated quiz detail page
-#             return redirect('edit_quiz')
-#     else:
-#         # If it's a GET request, create a form instance with the quiz data
-#         form = EditQuizForm(instance=quiz)
-
-    # Render the edit quiz template with the form
-    # return render(request, 'edit_quiz.html', {'form': form,})
+def delete_title(request, username):
+    if request.method == 'POST':
+        user = User.objects.get(username=username)
+        try:
+            oldQuiz = get_object_or_404(Quiz, user_id=user.id);
+            oldQuiz.delete();
+        except Exception as e:
+            print('failed to delete quiz!!, No quiz exist')    
+        return render(request, 'profile.html', {'user': user, 'quiz_title': ''})
 
 
 def generate_quiz(num_questions):

@@ -64,7 +64,11 @@ body {font-family: "Lato", sans-serif}
                 <p><i class="quiz-title">No quiz title created yet</i></p>
                 {% endif %}
                 <a href="{% url 'update_title' username=user.username %}" class="btn btn-secondary" role="button">Create Quiz Title</a>
-                
+               
+                <form action="{% url 'delete_title'  username=user.username %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Delete Title</button>
+                </form>   
                 <hr>
             </div>  
         </div>
