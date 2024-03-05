@@ -62,25 +62,33 @@ def signup(request):
 @login_required
 def profile(request, username):
     user = User.objects.get(username=username)
-    quiz_title = Quiz.objects.filter(user=user).first()  # Query for the quiz title
-    print(quiz_title)
-    return render(request, 'profile.html', {'user': user, 'quiz_title': quiz_title})
+    quiz = Quiz.objects.get(user_id=user.id);
+    return render(request, 'profile.html', {'user': user, 'quiz_title': quiz})
 
 def home(request):
     return render(request, "home.html")
 
-def create_title(request):
+def update_title(request, username):
     if request.method == 'POST':
         form = QuizForm(request.POST)
         if form.is_valid():
+            user = User.objects.get(username=username)
+            try:
+                oldQuiz = get_object_or_404(Quiz, user_id=user.id);
+                oldQuiz.delete();
+            except Exception as e:
+                print('first quiz!!')    
             quiz = form.save(commit=False)
-            quiz.user = request.user
+            quiz.id = quiz.id
+            quiz.user_id = user.id
             quiz.pub_date = timezone.now()
-            quiz.save()
-            return redirect('profile', username=request.user.username)  # Redirect to the profile page after creating the quiz
+            quiz.title = form.cleaned_data['title'];
+            form.save()
+            return render(request, 'profile.html', {'user': user, 'quiz_title': quiz.title})
     else:
         form = QuizForm()
-    return render(request, 'edit_title.html', {'form': form})
+        user = User.objects.get(username=username)
+    return render(request, 'quiz/edit_title.html', {'form': form, 'user': user})
 
 # def edit_title(request, quiz_id):
 #     # Retrieve the quiz object from the database
