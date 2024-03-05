@@ -122,8 +122,13 @@ def signup(request):
 @login_required
 def profile(request, username):
     user = User.objects.get(username=username)
-    
-    return render(request, 'profile.html', { 'user': user })
+    quiz_title = Quiz.objects.filter(user=user).first()  # Query for the quiz title
+    print(quiz_title)
+    return render(request, 'profile.html', {'user': user, 'quiz_title': quiz_title})
+
+# def quiz_list(request):
+#     title = Quiz.objects.filter(user=request.user)
+#     return render(request, 'profile.html', {'title': title})
 
 def create_title(request):
     if request.method == 'POST':
