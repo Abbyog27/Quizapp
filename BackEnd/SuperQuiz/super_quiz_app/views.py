@@ -69,9 +69,11 @@ def profile(request, username):
         print('No quiz to display!')   
     return render(request, 'profile.html', {'user': user, 'quiz_title': quiz})
 
+@login_required
 def home(request):
     return render(request, "home.html")
 
+@login_required
 def update_title(request, username):
     if request.method == 'POST':
         form = QuizForm(request.POST)
@@ -94,6 +96,7 @@ def update_title(request, username):
         user = User.objects.get(username=username)
     return render(request, 'quiz/edit_title.html', {'form': form, 'user': user})
 
+@login_required
 def delete_title(request, username):
     if request.method == 'POST':
         user = User.objects.get(username=username)
@@ -104,7 +107,7 @@ def delete_title(request, username):
             print('failed to delete quiz!!, No quiz exist')    
         return render(request, 'profile.html', {'user': user, 'quiz_title': ''})
 
-
+@login_required
 def generate_quiz(num_questions):
     total_questions = Question.objects.count()
     num_questions = min(num_questions, total_questions)
@@ -114,11 +117,12 @@ def generate_quiz(num_questions):
 def start_quiz(request):
     return redirect('random_question')
 
+@login_required
 def quiz_completed(request, score):
     return render(request, 'quiz/quiz_completed.html', {
         'score': score
     })  
-
+@login_required
 def random_question(request):
     if request.method == "POST":
         id = request.session.get('current_question_id')
